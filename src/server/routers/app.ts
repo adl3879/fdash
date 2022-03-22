@@ -1,7 +1,7 @@
-import * as trpc from "@trpc/server"
+import { createRouter } from "server/createRouter"
 import { z } from "zod"
 
-export const appRouter = trpc.router().query("hello", {
+export const appRouter = createRouter().query("hello", {
   input: z
     .object({
       text: z.string().nullish(),
