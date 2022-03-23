@@ -1,3 +1,4 @@
+import { Logo } from "icons/Logo"
 import type { NextPage } from "next"
 import Link from "next/link"
 import * as React from "react"
@@ -14,16 +15,16 @@ const SignupPage: NextPage<SignupPageProps> = ({}) => {
 
   return (
     <div className="signup">
+      <Logo className="flex justify-center mt-6" />
+
       <div className="absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4">
         <div className="max-w-md mx-auto text-center font-semibold text-2xl">
           <h1 className="text-grey-800 mb-4">Create an account</h1>
           <p className="font-medium text-grey-700 text-sm mb-4">Create a free account and start using Fashy Store.</p>
 
           <form onSubmit={handleSubmit}>
-            <div className="flex gap-2">
-              <FormItem label="First Name" name="firstname" placeholder="Your First Name" required />
-              <FormItem label="Last Name" name="lastname" placeholder="Your Last Name" required />
-            </div>
+            <FormItem label="First Name" name="firstname" placeholder="Your First Name" required />
+            <FormItem label="Last Name" name="lastname" placeholder="Your Last Name" required />
             <FormItem label="Email Address" name="email" placeholder="john@example.com" type="email" required />
             <FormItem label="Phone Number" name="phone" placeholder="Phone Number" type="tel" required />
             <FormItem label="Password" name="password" placeholder="********" type="password" required />

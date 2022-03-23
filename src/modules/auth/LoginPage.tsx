@@ -1,3 +1,4 @@
+import { Logo } from "icons/Logo"
 import type { NextPage } from "next"
 import Link from "next/link"
 import * as React from "react"
@@ -14,6 +15,8 @@ const LoginPage: NextPage<LoginPageProps> = ({}) => {
 
   return (
     <div className="login">
+      <Logo className="flex justify-center mt-6" />
+
       <div className="absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4">
         <div className="max-w-md mx-auto text-center font-semibold text-2xl">
           <h1 className="text-grey-800 mb-4">Log in to your account</h1>
