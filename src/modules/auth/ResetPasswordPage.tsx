@@ -1,13 +1,13 @@
+import * as React from "react"
 import { Logo } from "icons/Logo"
 import type { NextPage } from "next"
 import Link from "next/link"
-import * as React from "react"
 import Button from "ui/Button"
 import FormItem from "ui/FormItem"
 
-interface ForgotPasswordPageProps {}
+interface ResetPasswordPageProps {}
 
-const ForgotPasswordPage: NextPage<ForgotPasswordPageProps> = ({}) => {
+const ResetPasswordPage: NextPage<ResetPasswordPageProps> = ({}) => {
   function handleSubmit(event: any) {
     event.preventDefault()
     // event.target.email.value
@@ -21,27 +21,19 @@ const ForgotPasswordPage: NextPage<ForgotPasswordPageProps> = ({}) => {
         <div className="max-w-md mx-auto text-center font-semibold text-2xl">
           <h1 className="text-grey-800 mb-4">Forgot Password</h1>
           <p className="font-medium text-grey-700 text-sm mb-4" style={{ width: 360 }}>
-            Enter your email address and we'll send you an email with instructions to reset your password.
+            Enter your new password below and must be at least 8 characters long.
           </p>
 
           <form onSubmit={handleSubmit}>
-            <FormItem label="Email Address" name="email" placeholder="john@example.com" type="email" required />
+            <FormItem label="Enter New Password" name="password" placeholder="********" type="password" required />
+            <FormItem label="Confirm New Password" name="cpassword" placeholder="********" type="password" required />
 
-            <Button label="Send Password Reset Link" full={true} type="submit" loading={false} />
+            <Button label="Reset Password" full={true} type="submit" loading={false} />
           </form>
-
-          <div className="mt-3">
-            <small className="block text-xs mt-3">
-              Remember your password?{" "}
-              <Link href={"/login"}>
-                <span className="text-primary cursor-pointer">Login</span>
-              </Link>
-            </small>
-          </div>
         </div>
       </div>
     </div>
   )
 }
 
-export default ForgotPasswordPage
+export default ResetPasswordPage

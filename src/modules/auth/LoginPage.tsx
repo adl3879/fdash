@@ -30,7 +30,7 @@ const LoginPage: NextPage<LoginPageProps> = ({}) => {
           </form>
 
           <div className="mt-3">
-            <Link href={"#"}>
+            <Link href={"/forgot-password"}>
               <small className="block text-xs text-primary cursor-pointer">Forgot your Password?</small>
             </Link>
             <small className="block text-xs mt-3">
