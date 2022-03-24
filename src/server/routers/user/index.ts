@@ -16,6 +16,16 @@ export const userRouter = createRouter()
     }),
 
     async resolve({ input }) {
+      // check if email is unique
+      const checkUser = await prisma.user.findUnique({
+        where: {
+          email: input.email,
+        },
+      })
+      if (checkUser) {
+        throw new Error("An account with this email address already exists, please input a new one")
+      }
+
       const user = await prisma.user.create({
         data: {
           email: input.email,
@@ -29,6 +39,6 @@ export const userRouter = createRouter()
       // sign token
       const token = await signJwtToken(user, String(process.env.JWT_SECRET), "7d")
 
-      return { success: true, token }
+      return { token }
     },
   })

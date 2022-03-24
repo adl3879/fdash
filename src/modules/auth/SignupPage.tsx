@@ -13,12 +13,15 @@ interface SignupPageProps {}
 
 const SignupPage: NextPage<SignupPageProps> = ({}) => {
   const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false)
-
   const userMutation = trpc.useMutation(["user.signUp"])
+
+  React.useEffect(() => {
+    userMutation.isSuccess && setIsModalOpen(true)
+    console.log(userMutation.error)
+  })
 
   function handleSubmit(event: any) {
     event.preventDefault()
-    // setIsModalOpen(true)
 
     userMutation.mutate({
       email: event.target.email.value,
