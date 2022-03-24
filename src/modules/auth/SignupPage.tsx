@@ -1,21 +1,32 @@
+import * as React from "react"
 import { Logo } from "icons/Logo"
 import PasswordSent from "icons/PasswordSent"
 import type { NextPage } from "next"
 import Link from "next/link"
-import * as React from "react"
 import Button from "ui/Button"
 import FormItem from "ui/FormItem"
 import Modal from "ui/Modal"
+import { trpc } from "utils/trpc"
+import ErrorMsg from "ui/ErrorMsg"
 
 interface SignupPageProps {}
 
 const SignupPage: NextPage<SignupPageProps> = ({}) => {
   const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false)
 
+  const userMutation = trpc.useMutation(["user.signUp"])
+
   function handleSubmit(event: any) {
     event.preventDefault()
-    setIsModalOpen(true)
-    // event.target.email.value
+    // setIsModalOpen(true)
+
+    userMutation.mutate({
+      email: event.target.email.value,
+      password: event.target.password.value,
+      firstName: event.target.firstname.value,
+      lastName: event.target.lastname.value,
+      phone: event.target.phone.value,
+    })
   }
 
   return (
@@ -27,6 +38,8 @@ const SignupPage: NextPage<SignupPageProps> = ({}) => {
           <h1 className="text-grey-800 mb-4">Create an account</h1>
           <p className="font-medium text-grey-700 text-sm mb-4">Create a free account and start using Fashy Store.</p>
 
+          {userMutation.isError && <ErrorMsg content={userMutation.error?.message} />}
+
           <form onSubmit={handleSubmit}>
             <FormItem label="First Name" name="firstname" placeholder="Your First Name" required />
             <FormItem label="Last Name" name="lastname" placeholder="Your Last Name" required />
@@ -34,7 +47,7 @@ const SignupPage: NextPage<SignupPageProps> = ({}) => {
             <FormItem label="Phone Number" name="phone" placeholder="Phone Number" type="tel" required />
             <FormItem label="Password" name="password" placeholder="********" type="password" required />
 
-            <Button label="Sign In" full={true} type="submit" loading={false} />
+            <Button label="Sign In" full={true} type="submit" loading={userMutation.isLoading} />
           </form>
 
           <div className="mt-3">

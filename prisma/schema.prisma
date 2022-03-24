@@ -11,8 +11,31 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  email     String   @unique
-  name      String?
+  id                     Int       @id @default(autoincrement())
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt()
+  email                  String    @unique
+  lastName               String
+  firstName              String
+  password               String
+  phone                  String
+  verified               Boolean   @default(false) 
+  resetPasswordToken     String?
+  resetPasswordExpires   Int?
+  store                  Store?     @relation(fields: [storeId], references: [id])
+  storeId                Int?
+}
+
+model Store {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt()
+  logoUrl       String
+  name          String
+  description   String
+  domain        String
+  orderCount    Int
+  earnings      Int
+  visits        Int
+  user          User?
 }
