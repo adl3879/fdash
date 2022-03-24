@@ -1,16 +1,25 @@
 import { Logo } from "icons/Logo"
+import PasswordSent from "icons/PasswordSent"
 import type { NextPage } from "next"
 import Link from "next/link"
 import * as React from "react"
 import Button from "ui/Button"
 import FormItem from "ui/FormItem"
+import Modal from "ui/Modal"
 
 interface ForgotPasswordPageProps {}
 
 const ForgotPasswordPage: NextPage<ForgotPasswordPageProps> = ({}) => {
+  const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false)
+
   function handleSubmit(event: any) {
     event.preventDefault()
+    setIsModalOpen(true)
     // event.target.email.value
+  }
+
+  function handleModalClose() {
+    setIsModalOpen(false)
   }
 
   return (
@@ -40,6 +49,15 @@ const ForgotPasswordPage: NextPage<ForgotPasswordPageProps> = ({}) => {
           </div>
         </div>
       </div>
+
+      <Modal title="Password Reset" isOpen={isModalOpen} onClose={handleModalClose}>
+        <PasswordSent className="flex justify-center" />
+        <h2 className="text-grey-800 mb-2 text-center font-semibold">Password reset link sent</h2>
+        <p className="font-medium text-grey-700 text-sm mb-4 text-center">
+          We have sent you an email containing a link to reset your password, kindly check your email to set a new
+          password.
+        </p>
+      </Modal>
     </div>
   )
 }

@@ -1,15 +1,20 @@
 import { Logo } from "icons/Logo"
+import PasswordSent from "icons/PasswordSent"
 import type { NextPage } from "next"
 import Link from "next/link"
 import * as React from "react"
 import Button from "ui/Button"
 import FormItem from "ui/FormItem"
+import Modal from "ui/Modal"
 
 interface SignupPageProps {}
 
 const SignupPage: NextPage<SignupPageProps> = ({}) => {
+  const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false)
+
   function handleSubmit(event: any) {
     event.preventDefault()
+    setIsModalOpen(true)
     // event.target.email.value
   }
 
@@ -42,6 +47,21 @@ const SignupPage: NextPage<SignupPageProps> = ({}) => {
           </div>
         </div>
       </div>
+
+      <Modal title="Email Verification" isOpen={isModalOpen} onClose={() => console.log("brr")}>
+        <PasswordSent className="flex justify-center" />
+        <h2 className="text-grey-800 mb-2 text-center font-semibold">Email verification link sent</h2>
+        <p className="font-medium text-grey-700 text-sm mb-4 text-center">
+          We have sent you an email containing a link to verify your email, kindly check your email to set a new verify
+          your email address.
+          <br />
+          <br />
+          Didn't get an email?{" "}
+          <Link href={"/#"}>
+            <span className="text-primary cursor-pointer">Resend Verification Email</span>
+          </Link>
+        </p>
+      </Modal>
     </div>
   )
 }

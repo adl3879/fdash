@@ -17,6 +17,7 @@ module.exports = {
         600: "#6C757D",
         700: "#333333",
         800: "#151522",
+        overlay: "rgba(0, 0, 0, 0.25)",
       },
       white: "#FFFF",
       black: "#0000",
