@@ -22,6 +22,11 @@ module.exports = {
       white: "#FFFF",
       black: "#0000",
       transparent: "rgba(0, 0, 0, 0)",
+      error: {
+        primary: "#fdf6f6",
+        secondary: "#c20707",
+        tertiary: "#de7575",
+      },
     },
   },
   plugins: [],

@@ -15,7 +15,8 @@ const FormItem: React.FC<FormItemProps> = ({ label, name, placeholder, required 
         {label}
       </label>
       <input
-        className="font-primary font-medium text-sm px-6 py-2 bg-transparent border border-grey-500 outline-none rounded-md"
+        className={`font-primary font-medium text-sm px-6 py-2 bg-transparent border border-grey-500 outline-none rounded-md 
+        focus:border-primary`}
         id={name}
         name={name}
         placeholder={placeholder}

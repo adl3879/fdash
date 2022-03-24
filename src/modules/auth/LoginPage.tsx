@@ -3,6 +3,7 @@ import type { NextPage } from "next"
 import Link from "next/link"
 import * as React from "react"
 import Button from "ui/Button"
+import ErrorMsg from "ui/ErrorMsg"
 import FormItem from "ui/FormItem"
 
 interface LoginPageProps {}
@@ -21,6 +22,8 @@ const LoginPage: NextPage<LoginPageProps> = ({}) => {
         <div className="max-w-md mx-auto text-center font-semibold text-2xl">
           <h1 className="text-grey-800 mb-4">Log in to your account</h1>
           <p className="font-medium text-grey-700 text-sm mb-4">Enter your email address and password to continue.</p>
+
+          <ErrorMsg content="I a'int the same" />
 
           <form onSubmit={handleSubmit}>
             <FormItem label="Email Address" name="email" placeholder="john@example.com" type="email" required />
