@@ -1,17 +1,36 @@
 import { Logo } from "icons/Logo"
 import type { NextPage } from "next"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import * as React from "react"
 import Button from "ui/Button"
 import ErrorMsg from "ui/ErrorMsg"
 import FormItem from "ui/FormItem"
+import { trpc } from "utils/trpc"
 
 interface LoginPageProps {}
 
 const LoginPage: NextPage<LoginPageProps> = ({}) => {
+  const userMutation = trpc.useMutation("user.login")
+  const router = useRouter()
+
   function handleSubmit(event: any) {
     event.preventDefault()
     // event.target.email.value
+    userMutation.mutate(
+      {
+        email: event.target.email.value,
+        password: event.target.password.value,
+      },
+      {
+        onSuccess: (data) => {
+          if (typeof window !== "undefined") {
+            localStorage.setItem("token", data.token)
+          }
+          router.push("/") // redirect to home if successful
+        },
+      }
+    )
   }
 
   return (
@@ -23,13 +42,13 @@ const LoginPage: NextPage<LoginPageProps> = ({}) => {
           <h1 className="text-grey-800 mb-4">Log in to your account</h1>
           <p className="font-medium text-grey-700 text-sm mb-4">Enter your email address and password to continue.</p>
 
-          <ErrorMsg content="I a'int the same" />
+          {userMutation.isError && <ErrorMsg content={userMutation.error.message} />}
 
           <form onSubmit={handleSubmit}>
             <FormItem label="Email Address" name="email" placeholder="john@example.com" type="email" required />
             <FormItem label="Password" name="password" placeholder="********" type="password" required />
 
-            <Button label="Sign In" full={true} type="submit" loading={false} />
+            <Button label="Sign In" full={true} type="submit" loading={userMutation.isLoading} />
           </form>
 
           <div className="mt-3">

@@ -59,7 +59,7 @@ export default withTRPC<AppRouter>({
   config({ ctx }) {
     const url = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}/api/trpc` : "http://localhost:3000/api/trpc"
 
-    if (window) {
+    if (typeof window != "undefined") {
       ctx?.res?.setHeader("Authorization", "Bearer " + localStorage.getItem("token"))
     }
 

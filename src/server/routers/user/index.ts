@@ -44,7 +44,7 @@ export const userRouter = createRouter()
     },
   })
   // login
-  .query("login", {
+  .mutation("login", {
     input: z.object({
       email: z.string().email(),
       password: z.string().min(8, "Password should have at least 8 characters."),

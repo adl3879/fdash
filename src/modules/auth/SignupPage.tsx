@@ -15,21 +15,23 @@ const SignupPage: NextPage<SignupPageProps> = ({}) => {
   const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false)
   const userMutation = trpc.useMutation(["user.signUp"])
 
-  React.useEffect(() => {
-    userMutation.isSuccess && setIsModalOpen(true)
-    console.log(userMutation.error)
-  })
-
   function handleSubmit(event: any) {
     event.preventDefault()
 
-    userMutation.mutate({
-      email: event.target.email.value,
-      password: event.target.password.value,
-      firstName: event.target.firstname.value,
-      lastName: event.target.lastname.value,
-      phone: event.target.phone.value,
-    })
+    userMutation.mutate(
+      {
+        email: event.target.email.value,
+        password: event.target.password.value,
+        firstName: event.target.firstname.value,
+        lastName: event.target.lastname.value,
+        phone: event.target.phone.value,
+      },
+      {
+        onSuccess: async () => {
+          setIsModalOpen(true)
+        },
+      }
+    )
   }
 
   return (
@@ -64,7 +66,7 @@ const SignupPage: NextPage<SignupPageProps> = ({}) => {
         </div>
       </div>
 
-      <Modal title="Email Verification" isOpen={isModalOpen} onClose={() => console.log("brr")}>
+      <Modal title="Email Verification" isOpen={isModalOpen}>
         <PasswordSent className="flex justify-center" />
         <h2 className="text-grey-800 mb-2 text-center font-semibold">Email verification link sent</h2>
         <p className="font-medium text-grey-700 text-sm mb-4 text-center">

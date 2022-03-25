@@ -5,13 +5,13 @@ import { CSSTransition } from "react-transition-group"
 export interface ModalProps {
   title: string
   isOpen: boolean
-  onClose: () => void
+  onClose?: () => void
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, title, onClose, children }) => {
   // close modal on escape key
   const closeOnEscapeKey = (e: KeyboardEvent) => {
-    if (e.code == "Escape") onClose()
+    if (e.code == "Escape" && onClose) onClose()
   }
 
   React.useEffect(() => {
@@ -34,7 +34,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, title, onClose, children }) => {
           <div className="flex justify-between items-center mb-4">
             <h2 className="font-primary text-grey-primary text-xl font-medium">{title}</h2>
             <button className="outline-none" onClick={onClose}>
-              <CancelIcon width={20} height={20} />
+              {onClose && <CancelIcon width={20} height={20} />}
             </button>
           </div>
           <div className="font-primary">{children}</div>
