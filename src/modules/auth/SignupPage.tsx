@@ -29,6 +29,12 @@ const SignupPage: NextPage<SignupPageProps> = ({}) => {
       {
         onSuccess: async () => {
           setIsModalOpen(true)
+          const userQuery = trpc.useQuery(["user.sendVerificationEmail", event.target.email.value], {
+            onError: (error) => {
+              console.log(error)
+            },
+          })
+          console.log(userQuery.data)
         },
       }
     )

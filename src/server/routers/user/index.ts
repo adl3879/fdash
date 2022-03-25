@@ -3,6 +3,7 @@ import { z } from "zod"
 import { prisma } from "server/utils/prisma"
 import bcrypt from "bcrypt"
 import { signJwtToken } from "server/utils/jwt"
+import { sendMail } from "server/utils/email"
 
 export const userRouter = createRouter()
   // sign up
@@ -33,9 +34,6 @@ export const userRouter = createRouter()
           phone: input.phone,
         },
       })
-
-      // TODO!
-      // send verification email to user
 
       // sign token
       const token = await signJwtToken(user, String(process.env.JWT_SECRET), "7d")
@@ -69,5 +67,28 @@ export const userRouter = createRouter()
       const token = await signJwtToken(user, String(process.env.JWT_SECRET), "7d")
 
       return { token }
+    },
+  })
+  // send verification email to user
+  .query("sendVerificationEmail", {
+    input: z.string().email(),
+
+    async resolve({ input: email }) {
+      const user = await prisma.user.findUnique({
+        where: { email },
+      })
+
+      const token = await signJwtToken({ userId: user?.id }, String(process.env.JWT_TOKEN), "1h")
+      const url = "http://localhost:3000/email-verification/" + token
+
+      // send email
+      const sent = sendMail({
+        to: "oluwatoyosiadeleye4@gmail.com",
+        from: "adekanmbitoyosi@yahoo.com",
+        subject: "<verification email>",
+        text: url,
+      })
+
+      return { sent }
     },
   })
