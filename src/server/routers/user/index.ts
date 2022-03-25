@@ -146,7 +146,7 @@ export const userRouter = createRouter()
       const user = await prisma.user.findFirst({
         where: {
           resetPasswordToken: input.token,
-          resetPasswordExpires: { lte: Date.now() },
+          resetPasswordExpires: { gte: Date.now() },
         },
       })
 

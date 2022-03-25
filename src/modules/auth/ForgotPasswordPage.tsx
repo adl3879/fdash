@@ -4,18 +4,25 @@ import type { NextPage } from "next"
 import Link from "next/link"
 import * as React from "react"
 import Button from "ui/Button"
+import ErrorMsg from "ui/ErrorMsg"
 import FormItem from "ui/FormItem"
 import Modal from "ui/Modal"
+import { trpc } from "utils/trpc"
 
 interface ForgotPasswordPageProps {}
 
 const ForgotPasswordPage: NextPage<ForgotPasswordPageProps> = ({}) => {
   const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false)
+  const forgotPasswordMutation = trpc.useMutation(["user.sendPasswordResetEmail"])
 
   function handleSubmit(event: any) {
     event.preventDefault()
-    setIsModalOpen(true)
-    // event.target.email.value
+
+    forgotPasswordMutation.mutate(event.target.email.value, {
+      onSuccess() {
+        setIsModalOpen(true)
+      },
+    })
   }
 
   function handleModalClose() {
@@ -33,10 +40,17 @@ const ForgotPasswordPage: NextPage<ForgotPasswordPageProps> = ({}) => {
             Enter your email address and we'll send you an email with instructions to reset your password.
           </p>
 
+          {forgotPasswordMutation.isError && <ErrorMsg content={forgotPasswordMutation.error.message} />}
+
           <form onSubmit={handleSubmit}>
             <FormItem label="Email Address" name="email" placeholder="john@example.com" type="email" required />
 
-            <Button label="Send Password Reset Link" full={true} type="submit" loading={false} />
+            <Button
+              label="Send Password Reset Link"
+              full={true}
+              type="submit"
+              loading={forgotPasswordMutation.isLoading}
+            />
           </form>
 
           <div className="mt-3">
