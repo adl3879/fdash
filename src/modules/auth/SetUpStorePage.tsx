@@ -3,10 +3,15 @@ import type { NextPage } from "next"
 import FormItem from "ui/FormItem"
 import Button from "ui/Button"
 import { Logo } from "icons/Logo"
+import { useRouter } from "next/router"
+import { trpc } from "utils/trpc"
 
 interface SetUpStorePageProps {}
 
 const SetUpStorePage: NextPage<SetUpStorePageProps> = () => {
+  const router = useRouter()
+  const userQuery = trpc.useQuery(["user.getUserById", Number(router.asPath.split("/")[2])])
+
   function handleSubmit(event: any) {
     event.preventDefault()
     // event.target.email.value
@@ -22,7 +27,9 @@ const SetUpStorePage: NextPage<SetUpStorePageProps> = () => {
 
       <div className="absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4">
         <div className="max-w-md mx-auto text-center font-semibold text-2xl">
-          <h1 className="text-grey-800 mb-4">Setup your store</h1>
+          <h1 className="text-grey-800 mb-4" style={{ width: 360 }}>
+            Welcome <span className="capitalize text-primary">{userQuery.data?.user.firstName}</span>, setup your store.
+          </h1>
           <p className="font-medium text-grey-700 text-sm mb-4">Complete the form below to setup your store.</p>
 
           <form onSubmit={handleSubmit}>

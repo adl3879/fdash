@@ -5,7 +5,7 @@ import { decodeJwtToken } from "server/utils/jwt"
 export async function createContext(opts?: trpcNext.CreateNextContextOptions) {
   async function getUserFromHeader() {
     if (opts?.req.headers.authorization) {
-      const user = await decodeJwtToken(opts?.req.headers.authorization.split(" ")[1], String(process.env.JWT_SECRET))
+      const user = decodeJwtToken(opts?.req.headers.authorization.split(" ")[1], String(process.env.JWT_SECRET))
       return user
     }
     return null

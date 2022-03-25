@@ -14,6 +14,7 @@ interface SignupPageProps {}
 const SignupPage: NextPage<SignupPageProps> = ({}) => {
   const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false)
   const userMutation = trpc.useMutation(["user.signUp"])
+  const verifyEmailMutation = trpc.useMutation(["user.sendVerificationEmail"])
 
   function handleSubmit(event: any) {
     event.preventDefault()
@@ -28,13 +29,12 @@ const SignupPage: NextPage<SignupPageProps> = ({}) => {
       },
       {
         onSuccess: async () => {
-          setIsModalOpen(true)
-          const userQuery = trpc.useQuery(["user.sendVerificationEmail", event.target.email.value], {
-            onError: (error) => {
-              console.log(error)
+          // send verification email
+          verifyEmailMutation.mutate(event.target.email.value, {
+            onSuccess: () => {
+              setIsModalOpen(true)
             },
           })
-          console.log(userQuery.data)
         },
       }
     )

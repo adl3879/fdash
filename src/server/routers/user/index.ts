@@ -6,6 +6,22 @@ import { signJwtToken } from "server/utils/jwt"
 import { sendMail } from "server/utils/email"
 
 export const userRouter = createRouter()
+  // get user by id
+  .query("getUserById", {
+    input: z.number(),
+
+    async resolve({ input: id }) {
+      const user = await prisma.user.findUnique({
+        where: { id },
+      })
+      if (!user) {
+        throw new Error("User not found")
+      }
+
+      return { user }
+    },
+  })
+
   // sign up
   .mutation("signUp", {
     input: z.object({
@@ -70,7 +86,7 @@ export const userRouter = createRouter()
     },
   })
   // send verification email to user
-  .query("sendVerificationEmail", {
+  .mutation("sendVerificationEmail", {
     input: z.string().email(),
 
     async resolve({ input: email }) {
@@ -79,7 +95,7 @@ export const userRouter = createRouter()
       })
 
       const token = await signJwtToken({ userId: user?.id }, String(process.env.JWT_TOKEN), "1h")
-      const url = "http://localhost:3000/email-verification/" + token
+      const url = "http://localhost:3000/api/email-verification/" + token
 
       // send email
       const sent = sendMail({
