@@ -114,7 +114,7 @@ export const userRouter = createRouter()
       const token = crypto.randomBytes(32).toString("hex")
 
       try {
-        const updatedUser = await prisma.user.update({
+        await prisma.user.update({
           where: { email },
           data: {
             resetPasswordToken: token,
@@ -126,12 +126,11 @@ export const userRouter = createRouter()
       }
 
       // send email
-      const url = "http://localhost:3000/api/reset-password/" + token
       const sent = sendMail({
         to: "oluwatoyosiadeleye4@gmail.com",
         from: "adekanmbitoyosi@yahoo.com",
         subject: "<reset password>",
-        text: url,
+        text: "http://localhost:3000/reset-password/" + token,
       })
 
       return { sent }
@@ -167,7 +166,7 @@ export const userRouter = createRouter()
           throw new Error("Passwords do not match")
         }
       } else {
-        throw new Error("Token is no longer valid")
+        throw new Error("Reset token is no longer valid")
       }
     },
   })
