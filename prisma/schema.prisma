@@ -21,8 +21,8 @@ model User {
   phone                  String
   verified               Boolean   @default(false) 
   resetPasswordToken     String?
-  resetPasswordExpires   Int?
-  store                  Store?     @relation(fields: [storeId], references: [id])
+  resetPasswordExpires   BigInt?   @db.UnsignedBigInt
+  store                  Store?    @relation(fields: [storeId], references: [id])
   storeId                Int?
 }
 
