@@ -25,10 +25,6 @@ const ForgotPasswordPage: NextPage<ForgotPasswordPageProps> = ({}) => {
     })
   }
 
-  function handleModalClose() {
-    setIsModalOpen(false)
-  }
-
   return (
     <div className="login">
       <Logo className="flex justify-center mt-6" />
@@ -64,7 +60,7 @@ const ForgotPasswordPage: NextPage<ForgotPasswordPageProps> = ({}) => {
         </div>
       </div>
 
-      <Modal title="Password Reset" isOpen={isModalOpen} onClose={handleModalClose}>
+      <Modal title="Password Reset" isOpen={isModalOpen}>
         <PasswordSent className="flex justify-center" />
         <h2 className="text-grey-800 mb-2 text-center font-semibold">Password reset link sent</h2>
         <p className="font-medium text-grey-700 text-sm mb-4 text-center">

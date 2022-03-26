@@ -113,14 +113,17 @@ export const userRouter = createRouter()
     async resolve({ input: email }) {
       const token = crypto.randomBytes(32).toString("hex")
 
-      const updatedUser = await prisma.user.update({
-        where: { email },
-        data: {
-          resetPasswordToken: token,
-          resetPasswordExpires: Date.now() + 3600000, // 1hr
-        },
-      })
-      if (!updatedUser) throw new Error("No account with that email address exists")
+      try {
+        const updatedUser = await prisma.user.update({
+          where: { email },
+          data: {
+            resetPasswordToken: token,
+            resetPasswordExpires: Date.now() + 3600000, // 1hr
+          },
+        })
+      } catch (err) {
+        throw new Error("No account with that email address exists")
+      }
 
       // send email
       const url = "http://localhost:3000/api/reset-password/" + token
