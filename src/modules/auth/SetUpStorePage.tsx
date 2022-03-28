@@ -5,20 +5,32 @@ import Button from "ui/Button"
 import { Logo } from "icons/Logo"
 import { useRouter } from "next/router"
 import { trpc } from "utils/trpc"
+import ErrorMsg from "ui/ErrorMsg"
 
 interface SetUpStorePageProps {}
 
 const SetUpStorePage: NextPage<SetUpStorePageProps> = () => {
   const router = useRouter()
   const userQuery = trpc.useQuery(["user.getUserById", Number(router.asPath.split("/")[2])])
+  const storeMutation = trpc.useMutation(["store.createStore"])
+  const [imageBuffer, setImageBuffer] = React.useState<string | ArrayBuffer | null>()
 
   function handleSubmit(event: any) {
     event.preventDefault()
-    // event.target.email.value
+    storeMutation.mutate({
+      name: event.target.name.value,
+      description: event.target.description.value,
+      domain: event.target.domain.value,
+      logo: String(imageBuffer),
+    })
   }
 
   function handleImageUpload(event: any) {
-    console.log(event.target.files[0])
+    const reader = new FileReader()
+    reader.readAsDataURL(event.target.files[0])
+    reader.onloadend = () => {
+      setImageBuffer(reader.result)
+    }
   }
 
   return (
@@ -32,6 +44,8 @@ const SetUpStorePage: NextPage<SetUpStorePageProps> = () => {
           </h1>
           <p className="font-medium text-grey-700 text-sm mb-4">Complete the form below to setup your store.</p>
 
+          {storeMutation.isError && <ErrorMsg content={storeMutation.error?.message} />}
+
           <form onSubmit={handleSubmit}>
             <div className="mb-4 flex flex-col">
               <label className="font-primary font-medium text-grey-800 text-sm mb-1 text-left" htmlFor="description">
@@ -44,7 +58,7 @@ const SetUpStorePage: NextPage<SetUpStorePageProps> = () => {
                 type="file"
               />
             </div>
-            <FormItem label="Name" name="storename" placeholder="Name" required />
+            <FormItem label="Name" name="name" placeholder="Name" required />
             <div className="mb-4 flex flex-col">
               <label className="font-primary font-medium text-grey-800 text-sm mb-1 text-left" htmlFor="description">
                 Description
@@ -52,12 +66,13 @@ const SetUpStorePage: NextPage<SetUpStorePageProps> = () => {
               <textarea
                 className="font-primary font-medium text-sm px-6 py-2 bg-transparent border border-grey-500 outline-none rounded-md"
                 placeholder="Description"
+                name="description"
                 id="description"
               />
             </div>
-            <FormItem label="Domain" name="storelink" placeholder=".fashy.shop" type="text" required />
+            <FormItem label="Domain" name="domain" placeholder=".fashy.shop" type="text" required />
 
-            <Button label="Proceed" full={true} type="submit" loading={false} />
+            <Button label="Proceed" full={true} type="submit" loading={storeMutation.isLoading} />
           </form>
         </div>
       </div>

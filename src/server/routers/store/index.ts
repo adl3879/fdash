@@ -1,6 +1,7 @@
 import { createRouter } from "server/createRouter"
 import { createProtectedRouter } from "server/createProtectedRouter"
 import { prisma } from "server/utils/prisma"
+import { uploadImage } from "server/utils/cloudinary"
 import { z } from "zod"
 
 export const protectedStoreRouter = createProtectedRouter()
@@ -10,18 +11,23 @@ export const protectedStoreRouter = createProtectedRouter()
       name: z.string(),
       description: z.string(),
       domain: z.string(),
-      logo: z.any(),
+      logo: z.string(),
     }),
 
-    async resolve({ input }) {
+    async resolve({ ctx, input }) {
+      // const logoUrl = await uploadImage(input.logo)
+
       const store = await prisma.store.create({
         data: {
+          // user: ctx.user,
           name: input.name,
           description: input.description,
           domain: input.domain,
-          logoUrl: input.logo,
+          logoUrl: "brrrrrrr",
         },
       })
+
+      return { store }
     },
   })
 
