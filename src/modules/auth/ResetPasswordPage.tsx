@@ -16,7 +16,6 @@ const ResetPasswordPage: NextPage<ResetPasswordPageProps> = ({}) => {
   const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false)
   const router = useRouter()
   const resetPasswordMutation = trpc.useMutation(["user.validatePasswordReset"])
-  console.log(router.asPath.split("/")[2])
 
   function handleSubmit(event: any) {
     event.preventDefault()
@@ -30,7 +29,6 @@ const ResetPasswordPage: NextPage<ResetPasswordPageProps> = ({}) => {
       {
         onSuccess() {
           setIsModalOpen(true)
-          console.log("success")
         },
       }
     )

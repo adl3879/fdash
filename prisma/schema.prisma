@@ -30,12 +30,12 @@ model Store {
   id            Int       @id @default(autoincrement())
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt()
-  logoUrl       String
   name          String
   description   String
-  domain        String
-  orderCount    Int
-  earnings      Int
-  visits        Int
+  domain        String    @unique
+  logoUrl       String
+  orderCount    Int      @default(0)
+  earnings      Int      @default(0)
+  visits        Int      @default(0)
   user          User?
 }

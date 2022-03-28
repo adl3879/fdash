@@ -13,11 +13,13 @@ interface SignupPageProps {}
 
 const SignupPage: NextPage<SignupPageProps> = ({}) => {
   const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false)
+  const [email, setEmail] = React.useState<string>("")
   const userMutation = trpc.useMutation(["user.signUp"])
   const verifyEmailMutation = trpc.useMutation(["user.sendVerificationEmail"])
 
   function handleSubmit(event: any) {
     event.preventDefault()
+    setEmail(event.target.email.value)
 
     userMutation.mutate(
       {
@@ -28,16 +30,22 @@ const SignupPage: NextPage<SignupPageProps> = ({}) => {
         phone: event.target.phone.value,
       },
       {
-        onSuccess: async () => {
-          // send verification email
-          verifyEmailMutation.mutate(event.target.email.value, {
-            onSuccess: () => {
-              setIsModalOpen(true)
-            },
-          })
+        onSuccess(data) {
+          sendVerificationEmail()
+          if (typeof window === "undefined") {
+            localStorage.setItem("token", data.token)
+          }
         },
       }
     )
+  }
+
+  function sendVerificationEmail() {
+    verifyEmailMutation.mutate(email, {
+      onSuccess() {
+        setIsModalOpen(true)
+      },
+    })
   }
 
   return (
@@ -81,9 +89,9 @@ const SignupPage: NextPage<SignupPageProps> = ({}) => {
           <br />
           <br />
           Didn't get an email?{" "}
-          <Link href={"/#"}>
+          <div onClick={sendVerificationEmail} className="cursor-pointer">
             <span className="text-primary cursor-pointer">Resend Verification Email</span>
-          </Link>
+          </div>
         </p>
       </Modal>
     </div>

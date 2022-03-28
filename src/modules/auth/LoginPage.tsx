@@ -11,7 +11,7 @@ import { trpc } from "utils/trpc"
 interface LoginPageProps {}
 
 const LoginPage: NextPage<LoginPageProps> = ({}) => {
-  const userMutation = trpc.useMutation("user.login")
+  const userMutation = trpc.useMutation(["user.login"])
   const router = useRouter()
 
   function handleSubmit(event: any) {
@@ -23,7 +23,7 @@ const LoginPage: NextPage<LoginPageProps> = ({}) => {
         password: event.target.password.value,
       },
       {
-        onSuccess: (data) => {
+        onSuccess(data) {
           if (typeof window !== "undefined") {
             localStorage.setItem("token", data.token)
           }

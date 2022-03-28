@@ -1,10 +1,19 @@
 import { createRouter } from "server/createRouter"
+import { createProtectedRouter } from "server/createProtectedRouter"
 import { z } from "zod"
 import { prisma } from "server/utils/prisma"
 import bcrypt from "bcrypt"
 import { signJwtToken } from "server/utils/jwt"
 import { sendMail } from "server/utils/email"
 import crypto from "crypto"
+
+export const protectedUserRouter = createProtectedRouter()
+  // get authenticated user
+  .query("getAuthenticatedUser", {
+    async resolve({ ctx }) {
+      return { user: ctx.user }
+    },
+  })
 
 export const userRouter = createRouter()
   // get user by id
@@ -69,6 +78,9 @@ export const userRouter = createRouter()
       })
       if (!user) {
         throw new Error("The email address that you entered does not match any account")
+      }
+      if (!user.verified) {
+        throw new Error("This email address is not verified")
       }
 
       // check if password is correct
