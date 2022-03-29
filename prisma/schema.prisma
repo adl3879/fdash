@@ -37,5 +37,5 @@ model Store {
   earnings      Int      @default(0)
   visits        Int      @default(0)
   user          User?    @relation(fields: [userId], references: [id])
-  userId        Int?
+  userId        Int?     @unique
 }
