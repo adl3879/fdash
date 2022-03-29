@@ -169,7 +169,7 @@ export const userRouter = createRouter()
           await prisma.user.update({
             where: { id: user.id },
             data: {
-              password: input.newPassword,
+              password: await bcrypt.hash(input.newPassword, 10),
               resetPasswordToken: null,
               resetPasswordExpires: null,
             },

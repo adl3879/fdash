@@ -17,12 +17,19 @@ const SetUpStorePage: NextPage<SetUpStorePageProps> = () => {
 
   function handleSubmit(event: any) {
     event.preventDefault()
-    storeMutation.mutate({
-      name: event.target.name.value,
-      description: event.target.description.value,
-      domain: event.target.domain.value,
-      logo: String(imageBuffer),
-    })
+    storeMutation.mutate(
+      {
+        name: event.target.name.value,
+        description: event.target.description.value,
+        domain: event.target.domain.value,
+        logo: String(imageBuffer),
+      },
+      {
+        onSuccess() {
+          router.push("/")
+        },
+      }
+    )
   }
 
   function handleImageUpload(event: any) {
