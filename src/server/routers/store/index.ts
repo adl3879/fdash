@@ -19,11 +19,13 @@ export const protectedStoreRouter = createProtectedRouter()
 
       const store = await prisma.store.create({
         data: {
-          userId: ctx.user.userId,
           name: input.name,
           description: input.description,
           domain: input.domain,
           logoUrl,
+          user: {
+            connect: { id: ctx.user.userId },
+          },
         },
       })
 
