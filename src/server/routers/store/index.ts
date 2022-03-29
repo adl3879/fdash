@@ -15,15 +15,15 @@ export const protectedStoreRouter = createProtectedRouter()
     }),
 
     async resolve({ ctx, input }) {
-      // const logoUrl = await uploadImage(input.logo)
+      const logoUrl = await uploadImage(input.logo)
 
       const store = await prisma.store.create({
         data: {
-          // user: ctx.user,
+          userId: ctx.user.userId,
           name: input.name,
           description: input.description,
           domain: input.domain,
-          logoUrl: "brrrrrrr",
+          logoUrl,
         },
       })
 

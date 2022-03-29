@@ -31,6 +31,9 @@ const SetUpStorePage: NextPage<SetUpStorePageProps> = () => {
     reader.onloadend = () => {
       setImageBuffer(reader.result)
     }
+    reader.onerror = () => {
+      console.log("error")
+    }
   }
 
   return (

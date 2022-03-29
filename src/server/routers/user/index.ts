@@ -59,7 +59,7 @@ export const userRouter = createRouter()
       })
 
       // sign token
-      const token = await signJwtToken(user, String(process.env.JWT_SECRET), "7d")
+      const token = await signJwtToken({ userId: user.id }, String(process.env.JWT_SECRET), "7d")
 
       return { token }
     },
@@ -90,7 +90,7 @@ export const userRouter = createRouter()
       }
 
       // sign token
-      const token = await signJwtToken(user, String(process.env.JWT_SECRET), "7d")
+      const token = await signJwtToken({ userId: user.id }, String(process.env.JWT_SECRET), "7d")
 
       return { token }
     },
