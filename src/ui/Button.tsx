@@ -5,7 +5,7 @@ interface ButtonProps {
   label: string
   variant?: "primary" | "secondary" | "tertiary"
   className?: string
-  loading: boolean
+  loading?: boolean
   full?: boolean
   type?: "button" | "submit" | "reset"
   onClick?: () => void
@@ -18,7 +18,7 @@ const Button = ({
   onClick,
   type = "submit",
   full,
-  loading,
+  loading = false,
   ...props
 }: ButtonProps) => {
   return (

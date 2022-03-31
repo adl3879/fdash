@@ -35,7 +35,7 @@ const LoginPage: NextPage<LoginPageProps> = ({}) => {
 
   return (
     <div className="login">
-      <Logo className="flex justify-center mt-6" />
+      <Logo className="flex justify-center mt-6" fill="#4D65F1" />
 
       <div className="absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4">
         <div className="max-w-md mx-auto text-center font-semibold text-2xl">
