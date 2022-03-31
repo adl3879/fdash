@@ -4,12 +4,14 @@ import Link from "next/link"
 import { Home } from "icons/Home"
 import { Products } from "icons/Products"
 import { Settings } from "icons/Settings"
+import { useRouter } from "next/router"
 
 interface SidebarProps {}
-interface SidebarNavItemsProps {
+interface SidebarNavItemProps {
   href?: string
   label?: string
   icon?: React.ReactNode
+  active?: boolean
 }
 
 const Links = [
@@ -18,21 +20,33 @@ const Links = [
   ["Settings", "/settings", <Settings />],
 ]
 
-const SidebarNavItems: React.FC<SidebarNavItemsProps> = ({ href, label, icon }) => (
-  <a className="flex items-center gap-2 text-white my-5 focus:bg-grey-100" href={href}>
-    {icon}
-    {label}
-  </a>
+const SidebarNavItem: React.FC<SidebarNavItemProps> = ({ href, label, icon, active }) => (
+  <Link href={String(href)}>
+    <a
+      className={`flex items-center gap-2 text-white my-4 py-2 px-3 rounded
+      ${active && "bg-active-white"}`}
+    >
+      {icon}
+      {label}
+    </a>
+  </Link>
 )
 
 const Sidebar: React.FC<SidebarProps> = () => {
+  const router = useRouter()
+
   return (
     <div className="px-5 py-10">
-      <Logo fill="#ffff" />
+      <Logo fill="#ffff" className="px-3" />
 
       <nav className="flex flex-col mt-10">
         {Links.map((item) => (
-          <SidebarNavItems href={String(item[1])} label={String(item[0])} icon={item[2]} />
+          <SidebarNavItem
+            href={String(item[1])}
+            label={String(item[0])}
+            icon={item[2]}
+            active={router.pathname === item[1]}
+          />
         ))}
       </nav>
     </div>

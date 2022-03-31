@@ -7,7 +7,7 @@ interface HomePageProps {}
 const HomePage: NextPage<HomePageProps> = () => {
   return (
     <div className="home">
-      <MainScreen>
+      <MainScreen path="dashboard">
         <div>sssssssssss</div>
       </MainScreen>
     </div>

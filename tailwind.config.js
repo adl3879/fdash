@@ -31,6 +31,7 @@ module.exports = {
         secondary: "#c20707",
         tertiary: "#de7575",
       },
+      "active-white": "rgba(255, 255, 255, 0.5)",
     },
   },
   plugins: [],
